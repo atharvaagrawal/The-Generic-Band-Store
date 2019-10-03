@@ -29,12 +29,27 @@ function ready() {
 }
 
 function purchaseClicked() {
-    alert('Thank you for your purchase')
     var cartItems = document.getElementsByClassName('cart-items')[0]
+    var purchaseWindow = window.open("","Purchase","top=900,left=900,width=900,height=500");
+
+    purchaseWindow.document.writeln("<html> <body>");
+    purchaseWindow.document.writeln("<title> Purchase </title>");
+    purchaseWindow.document.writeln('<link rel="stylesheet" href="styles.css" />');
+    purchaseWindow.document.writeln('<script src="store.js" async></script>');    
+    purchaseWindow.document.writeln('<h2 class="section-header"> CART</h2> <div class="cart-row"> <span class="cart-item cart-header cart-column">ITEM</span> <span class="cart-price cart-header cart-column">PRICE</span> <span class="cart-quantity cart-header cart-column">QUANTITY</span> </div> ');
+     
+    var cartItems = document.getElementsByClassName("cart-items")[0].innerHTML;
+    var cartTotal = document.getElementsByClassName("cart-total")[0].innerHTML;
+    
+    purchaseWindow.document.writeln(cartItems+cartTotal);
+    
+    purchaseWindow.document.writeln('<button class="btn btn-primary btn-close" onclick="window.close()" type="button">CLOSE</button>');
+    purchaseWindow.document.writeln("</body> </html>"); 
+    var cartItems = document.getElementsByClassName("cart-items")[0];
     while (cartItems.hasChildNodes()) {
         cartItems.removeChild(cartItems.firstChild)
     }
-    updateCartTotal()
+    updateCartTotal() 
 }
 
 function removeCartItem(event) {
@@ -82,6 +97,7 @@ function addItemToCart(title, price, imageSrc) {
             <input class="cart-quantity-input" type="number" value="1">
             <button class="btn btn-danger" type="button">REMOVE</button>
         </div>`
+
     cartRow.innerHTML = cartRowContents
     cartItems.append(cartRow)
     cartRow.getElementsByClassName('btn-danger')[0].addEventListener('click', removeCartItem)
@@ -92,6 +108,7 @@ function updateCartTotal() {
     var cartItemContainer = document.getElementsByClassName('cart-items')[0]
     var cartRows = cartItemContainer.getElementsByClassName('cart-row')
     var total = 0
+
     for (var i = 0; i < cartRows.length; i++) {
         var cartRow = cartRows[i]
         var priceElement = cartRow.getElementsByClassName('cart-price')[0]
